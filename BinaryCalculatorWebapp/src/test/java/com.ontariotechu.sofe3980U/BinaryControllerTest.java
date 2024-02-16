@@ -57,4 +57,22 @@ public class BinaryControllerTest {
 			.andExpect(model().attribute("operand1", "111"));
     }
 
+  @Test
+    public void testNoOperatorProvided() throws Exception {
+        this.mvc.perform(post("/")
+                .param("operand1", "101")
+                .param("operator", "") // No operator provided
+                .param("operand2", "10"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("Error")); // Assuming the default action is to show an error
+    }
+  @Test
+  public void testUnsupportedOperator() throws Exception {
+      this.mvc.perform(post("/")
+              .param("operand1", "101")
+              .param("operator", "-") // Assuming "-" is not supported
+              .param("operand2", "10"))
+          .andExpect(status().isOk())
+          .andExpect(view().name("Error")); // Assuming the view name for errors is "Error"
+  }
 }

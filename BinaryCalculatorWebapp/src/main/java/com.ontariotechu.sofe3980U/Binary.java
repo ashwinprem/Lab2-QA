@@ -31,7 +31,7 @@ public class Binary
 		this.number=number.substring(beg); // exclude the trailing zeros if any
 		// uncomment the following code
 		
-		if(this.number=="") { // replace empty strings with a single zero
+		if(this.number.equals("")) { // replace empty strings with a single zero
 			this.number="0";
 		}
 		
@@ -79,4 +79,64 @@ public class Binary
 		return result;
 		
 	}
+
+  public static Binary multiply(Binary num1, Binary num2) {
+    String n1 = num1.number;
+    String n2 = num2.number;
+    
+    // Result of multiplication as binary string
+    String result = "0";
+    // Temporary string for holding one line of multiplication before adding to the result
+    String temp;
+    
+    for (int i = n2.length() - 1; i >= 0; i--) {
+        temp = "";
+        for (int j = n2.length() - 1; j > i; j--) {
+            temp = "0" + temp; // Adding zeroes based on the position
+        }
+        if (n2.charAt(i) == '1') {
+            temp = n1 + temp; // If the current digit of n2 is 1, add n1 to temp
+        } else {
+            temp = "0" + temp; // If current digit of n2 is 0, just add zeroes to temp
+        }
+        
+        // Add temp to the result
+        result = add(new Binary(result), new Binary(temp)).number;
+    }
+    
+    return new Binary(result);
+  }
+
+  public static Binary and(Binary num1, Binary num2) {
+    StringBuilder result = new StringBuilder();
+    String n1 = num1.number;
+    String n2 = num2.number;
+    // Pad the shorter number with leading zeros
+    while (n1.length() < n2.length()) n1 = "0" + n1;
+    while (n2.length() < n1.length()) n2 = "0" + n2;
+    
+    for (int i = 0; i < n1.length(); i++) {
+        // Only add '1' to result if both corresponding digits are '1'
+        result.append((n1.charAt(i) == '1' && n2.charAt(i) == '1') ? '1' : '0');
+    }
+    
+    return new Binary(result.toString());
+  }
+
+  public static Binary or(Binary num1, Binary num2) {
+    StringBuilder result = new StringBuilder();
+    String n1 = num1.number;
+    String n2 = num2.number;
+    // Pad the shorter number with leading zeros
+    while (n1.length() < n2.length()) n1 = "0" + n1;
+    while (n2.length() < n1.length()) n2 = "0" + n2;
+    
+    for (int i = 0; i < n1.length(); i++) {
+        // Add '1' to result if any of the corresponding digits are '1'
+        result.append((n1.charAt(i) == '1' || n2.charAt(i) == '1') ? '1' : '0');
+    }
+    
+    return new Binary(result.toString());
+  }
+
 }	
